@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}注册{% endblock %}
+
+
+{% block content %}
+    <link href="{% static 'css/add.css' %}" rel="stylesheet">
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>添加IDC机房 | Add IDC.</h2>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5> 填写机房详细信息 </h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user"></ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="ibox-content">
+                    <form class="form-horizontal"  method="post" role="form" >
+                        {% csrf_token %}
+                        {% if emg %}
+                            <div class="alert alert-warning text-center">{{ emg }}</div>
+                        {% endif %}
+                        {% if smg %}
+                            <div class="alert alert-success text-center">{{ smg }}</div>
+                        {% endif %}
+                    {% for i in uf %}
+                        <div class="form-group">
+                            <label class="control-label col-sm-2 col-lg-2 " for="id_{{ i.name }}" > {{ i.label }} </label>
+{#                            <div class=" col-sm-10 col-lg-10 ">#}
+{#                                {% if i.name == 'network' or i.name == 'comment'%}#}
+{#                                    <textarea name="{{ i.name }}" class=" form-control" id="id_{{ i.name }}" rows="10" cols="40"></textarea>#}
+{#                                {% elif i.name == 'comment' %}#}
+{#                                    <textarea name="{{ i.name }}" class=" form-control" id="id_{{ i.name }}" rows="10" cols="40"></textarea>#}
+{#                                {% else %}#}
+{#                                    <input name="{{ i.name }}" class=" form-control" id="id_{{ i.name }}" type="text" maxlength="64">#}
+{#                                    {{ i }}#}
+{#                                {% endif %}#}
+{#                            </div>#}
+                        {% if i.name == 'operator' or i.name == 'type'%}
+                            <div class="form-group">
+                                {{ i }}
+                            </div>
+                        {% else %}
+                            {{ i }}
+                        {% endif %}
+                        </div>
+                    {% endfor %}
+                        <div class="form-group">
+                           <div class="col-sm-4 col-sm-offset-5">
+                               <button class="btn btn-white" type="submit"> 重置 </button>
+                               <button class="btn btn-primary" type="submit"> 提交 </button>
+                           </div>
+                       </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

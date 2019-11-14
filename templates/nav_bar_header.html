@@ -1,0 +1,53 @@
+<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <form role="search" class="navbar-form-custom" method="get" action="/assets/search/">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" placeholder="输入搜索..." class="form-control" name="host_node" id="id-host_node">
+            </div>
+        </form>
+    </div>
+    <ul class="nav navbar-top-links navbar-right">
+        {% if request.user.username %}
+        <li>
+            <span class="m-r-sm text-muted welcome-message">欢迎使用运维自动化平台</span>
+        </li>
+
+
+                <li>
+                    <a href="/accounts/logout/"><i class="fa fa-sign-out"></i> 退出</a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="/accounts/login/"><i class="fa fa-sign-out"></i> 登陆</a>
+                </li>
+        {% endif %}
+    </ul>
+</nav>
+
+{#{% if not request.user.menu_status %}#}
+{#<script language="javascript">#}
+{#function refresh(){#}
+{#    $("body").toggleClass("mini-navbar");#}
+{#    SmoothlyMenu();#}
+{#}#}
+{#window.refresh();#}
+{#</script>#}
+{#{% endif %}#}
+
+
+{#<script>#}
+{#    $(function() {#}
+{#        $(document).on("click", ".navbar-minimalize", function (e) {#}
+{#            e.preventDefault();#}
+{#            var url = $(this).attr("href");#}
+{#            $.ajax({#}
+{#                type: "GET",#}
+{#                url: "/accounts/menu/"#}
+{#            }).done(function (data) {#}
+{#                //$("#edit_result").html(data);#}
+{#            });#}
+{#            return false;#}
+{#        });#}
+{#    });#}
+{#</script>#}

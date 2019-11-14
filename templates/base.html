@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<link REL="SHORTCUT ICON" HREF="{% static "images/ico/images.ico" %}"/>
+    <title>{% block title %}{% endblock %}</title>
+        {% include 'link_css.html' %}
+        {% include 'script.html' %}
+        {% block head %} {% endblock %}
+</head>
+<body>
+    <div id="wrapper">
+        {% include 'nav.html' %}
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                {% include 'nav_bar_header.html' %}
+            </div>
+
+            {% block content %}
+            {% endblock %}
+            <br><br><br><hr>
+            {% include 'footer.html' %}
+
+        </div>
+    </div>
+
+</body>
+</html>

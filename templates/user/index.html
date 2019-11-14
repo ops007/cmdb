@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}我的网站|首页{% endblock %}
+
+{% block content %}
+<style type="text/css">
+#head{
+height:40px;
+background-color:#0033CC;
+margin:0;
+}
+#content{
+background:#CCCCCC;
+height:200px;
+margin:0;
+}
+#left{
+width:20%;
+height:200px;
+background:#CCCC66;
+float:left;
+margin:0;
+}
+#c{
+width:60%;
+height:200px;
+background:red;
+margin:0;
+float:left;
+}
+
+#c #c1{
+    float:left;
+    width:70%;
+    height: 60%;
+    background-color: #1b2d85;
+    border-bottom: solid 20px;
+}
+#c #c2{
+    float:left;
+    width:30%;
+    height: 80%;
+    background-color: #1b6d85;
+}
+#c #c3{
+    float:right;
+    width:70%;
+    height: 40%;
+    background-color: #2a6496;
+}
+
+#right{
+width:20%;
+height:200px;
+background:#339966;
+float:left;
+margin:0;
+}
+#foot{
+background:#0099CC;
+height:40px;
+margin:0;
+}
+</style>
+<div id="head">head</div>
+<div id="content">
+  <div id="left">left</div>
+  <div id="c">
+      <div id="c1">c1</div>
+      <div id="c2">c2</div>
+      <div id="c3">c3</div>
+  </div>
+  <div id="right">rigth</div>
+</div>
+<div id="foot">foot</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}注册{% endblock %}
+{% block content %}
+        <link href="{% static 'css/add.css' %}" rel="stylesheet">
+<style>
+    .col-sm-10 ul{list-style-type:none;line-height:33px;}
+    .col-sm-10 li{float:left;margin-right:12px;text-align: left;}
+    .col-sm-10 select  {
+    background-color: #FFFFFF;
+    background-image: none;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    color: #555555;
+    display: block;
+    font-size: 14px;
+    height: 34px;
+    line-height: 1.42857;
+    padding: 6px 12px;
+    transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    vertical-align: middle;
+    width: 100%;
+}
+.control-label{width:100px;}
+.form-control{width:100%;}
+.col-sm-10 select{width:100%;}
+.form-horizontal{margin-top:10px;}
+label{padding-top:7px;margin-bottom:0;text-align:right;width:16.66%;float:left}
+input{
+    width: 83.33%;
+    box-shadow:none;
+    *zoom:1;
+
+  background-color: #FFFFFF;
+  background-image: none;
+  border: 1px solid #e5e6e7;
+  border-radius: 1px;
+  color: inherit;
+  display: block;
+  padding: 6px 12px;
+  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  font-size: 14px;
+}
+.hr-line-dashed {
+  border-top: 1px dashed #e7eaec;
+  color: #ffffff;
+  background-color: #ffffff;
+  height: 1px;
+  margin: 20px 0;
+}
+</style>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>添加主机 | Add Host.</h2>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-10">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5> 填写主机详细信息 </h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user"></ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+
+            <div class="ibox-content">
+                <form class="form-horizontal "  action="" id="host_add"  method="post" name="horizontal" role="form" autocomplete="off">
+                {% csrf_token %}
+                    {% if emg %}
+                        <div class="alert alert-warning text-center">{{ emg }}</div>
+                    {% endif %}
+                    {% if smg %}
+                        <div class="alert alert-success text-center">{{ smg }}</div>
+                    {% endif %}
+
+                {% for i in uf %}
+                    <div class="form-group">
+                        <label class="control-label col-sm-2 col-lg-2" for="id_node_name">{{ i.label }}</label>
+                        <div class=" col-sm-10 col-lg-10 ">
+                            {% if i.name == 'business' or i.name == 'service' %}
+                                <div class="form-group">
+                                    <label for="groups" class="col-lg-2 control-label">所属项目组</label>
+                                    <div class="col-sm-3">
+                                        <select id="groups" size="10" class="form-control m-b" multiple>
+                                        {% for i in projects %}
+                                                <option value="{{ i.uuid }}">{{ i }}</option>
+                                        {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <div class="btn-group" style="margin-top: 50px;">
+                                            <button type="button" class="btn btn-white" onclick="move_right('groups', 'groups_selected')"><i class="fa fa-chevron-right"></i></button>
+                                            <br>
+                                            <button type="button" class="btn btn-white" onclick="move_left('groups_selected', 'groups')"><i class="fa fa-chevron-left"></i> </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div>
+                                            <select id="groups_selected" name="{{ i.name }}" class="form-control m-b" size="10"  multiple>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+{#                                <input name="{{ i.name }}" class=" form-control" id="id_node_name" type="text" maxlength="100">#}
+                                {{ i }}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+
+                   <div class="form-group">
+                       <div class="col-sm-4 col-sm-offset-5">
+                           <button class="btn btn-white" type="submit"> 重置 </button>
+                           <button class="btn btn-primary" type="submit"> 提交 </button>
+                       </div>
+                   </div>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.$ && $(function(){
+    //验证初始化
+        $('#host_add').validator({
+            //stopOnError:true,
+            //timely: 2,
+            theme: "yellow_right_effect",
+            showOk: "",
+            //自定义规则（PS：建议尽量在全局配置中定义规则，统一管理）
+            rules: {
+                check_node: [/^((l|i)-){0,1}(n-[a-z0-9]+|[a-z0-9]{1,20}\.[a-z0-9]{1,20}\.({% for i in env %}{% if forloop.last %}{{ i }}{% else %}{{ i }}|{% endif %}{% endfor %}))\.({% for i in idc_list %}{% if forloop.last %}{{ i }}{% else %}{{ i }}|{% endif %}{% endfor %})$/, '主机名不正确'],
+                check_mac: [/^([0-9A-Fa-f]{2})(-[0-9A-Fa-f]{2}){5}|([0-9A-Fa-f]{2})(:[0-9A-Fa-f]{2}){5}$/, 'MAC不正确'], //验证mac
+                check_ip: [/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/, 'ip不正确']
+        },
+        fields: {
+            // "node_name": {
+            //     rule: "required;check_node;remote[/assets/select, node_name, csrfmiddlewaretoken]",
+            //     tip: "输入主机名",
+            //     ok: "",
+            //     msg: {required: "必须填写!"},
+            //     data: {'data-ok':"主机名可以使用", 'data-msg-required': '正确'}
+            // },
+            "mac": {
+                rule: "required;check_mac",
+                tip: "输入MAC",
+                ok: "",
+                msg: {required: "必须填写!"}
+            },
+            "eth1":{
+                rule: "required;check_ip",
+                tip: "输入ip地址",
+                ok:"",
+                msg:{required: "必须填写!"}
+            },
+            "internal_ip":{
+                rule: "required;",
+                tip: "远控卡ip",
+                ok:"",
+                msg:{required: "必须填写!"}
+            },
+            "brand":{
+                rule: "required;",
+                tip: "",
+                ok:"",
+                msg:{required: "必须填写!"}
+            },
+            "idc":{
+                rule: "required;",
+                tip: "",
+                ok:"",
+                msg:{required: "必须填写!"}
+            },
+            "system":{
+                rule: "required;",
+                tip: "",
+                ok:"",
+                msg:{required: "必须填写!"}
+            },
+             "idc":{
+                rule: "required;",
+                tip: "",
+                ok:"",
+                msg:{required: "必须填写!"}
+            }
+        },
+        valid: function(form) {
+            form.submit();
+        }
+    });
+    });
+
+    function move_left(from, to) {
+        $("#"+from+" option").each(function(){
+            if ( $(this).prop("selected") == true ) {
+                $("#"+to).append(this);
+                $(this).attr("selected",'false');
+            }
+            $(this).attr("selected",'true');
+        });
+    }
+    function move_right(from, to) {
+        $("#"+from+" option").each(function(){
+            if ( $(this).prop("selected") == true ) {
+                $("#"+to).append(this);
+            }
+
+        });
+    }
+
+    function move_all(from, to){
+        $("#"+from).children().each(function(){
+            $("#"+to).append(this);
+        });
+    }
+</script>
+{% endblock %}
